@@ -10,9 +10,9 @@
 #import <QuartzCore/QuartzCore.h>
 #import "PTKTextField.h"
 
-#define RGB(r,g,b) [UIColor colorWithRed:r/255.0f green:g/255.0f blue:b/255.0f alpha:1.0f]
-#define DarkGreyColor RGB(0,0,0)
-#define RedColor RGB(253,0,17)
+#define RGB(r, g, b) [UIColor colorWithRed:r / 255.0f green:g / 255.0f blue:b / 255.0f alpha:1.0f]
+#define DarkGreyColor RGB(0, 0, 0)
+#define RedColor RGB(253, 0, 17)
 #define DefaultBoldFont [UIFont boldSystemFontOfSize:17]
 
 #define kPTKViewPlaceholderViewAnimationDuration 0.25
@@ -29,7 +29,7 @@ static NSString *const kPTKLocalizedStringsTableName = @"PaymentKit";
 static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable";
 
 @interface PTKView () <PTKTextFieldDelegate> {
-@private
+  @private
     BOOL _isInitialState;
     BOOL _isValidState;
     UIToolbar *doneToolbar;
@@ -49,10 +49,15 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
 
 - (void)pkTextFieldDidBackSpaceWhileTextIsEmpty:(PTKTextField *)textField;
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)replacementString;
-- (BOOL)cardNumberFieldShouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)replacementString;
-- (BOOL)cardExpiryShouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)replacementString;
-- (BOOL)cardCVCShouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)replacementString;
+- (BOOL)textField:(UITextField *)textField
+    shouldChangeCharactersInRange:(NSRange)range
+                replacementString:(NSString *)replacementString;
+- (BOOL)cardNumberFieldShouldChangeCharactersInRange:(NSRange)range
+                                   replacementString:(NSString *)replacementString;
+- (BOOL)cardExpiryShouldChangeCharactersInRange:(NSRange)range
+                              replacementString:(NSString *)replacementString;
+- (BOOL)cardCVCShouldChangeCharactersInRange:(NSRange)range
+                           replacementString:(NSString *)replacementString;
 
 @property (nonatomic) UIView *opaqueOverGradientView;
 @property (nonatomic) PTKCardNumber *cardNumber;
@@ -65,8 +70,7 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
 
 @implementation PTKView
 
-- (id)initWithFrame:(CGRect)frame
-{
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         [self setup];
@@ -74,22 +78,20 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
     return self;
 }
 
-- (void)awakeFromNib
-{
+- (void)awakeFromNib {
     [super awakeFromNib];
     [self setup];
 }
 
-- (void)setup
-{
+- (void)setup {
     _isInitialState = YES;
     _isValidState = NO;
 
     self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, 290, self.frame.size.height);
     self.backgroundColor = [UIColor clearColor];
 
-
-    self.innerView = [[UIView alloc] initWithFrame:CGRectMake(40, 12, self.frame.size.width - 40, 20)];
+    self.innerView =
+        [[UIView alloc] initWithFrame:CGRectMake(40, 12, self.frame.size.width - 40, 20)];
     self.innerView.clipsToBounds = YES;
 
     [self setupPlaceholderView];
@@ -101,22 +103,20 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
 
     self.underlineView = [CALayer layer];
     self.underlineView.frame =
-    CGRectMake(0.0f, self.frame.size.height - 1, self.frame.size.width, 1.0);
+        CGRectMake(0.0f, self.frame.size.height - 1, self.frame.size.width, 1.0);
     [self.layer addSublayer:self.underlineView];
 
-    
     [self addSubview:self.innerView];
     [self addSubview:self.placeholderView];
 
     [self stateCardNumber];
 }
 
-
-- (void)setupPlaceholderView
-{
+- (void)setupPlaceholderView {
     self.placeholderView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 13, 32, 20)];
     self.placeholderView.backgroundColor = [UIColor clearColor];
-    self.placeholderView.image = [UIImage imageNamed:@"placeholder" inBundle:kPTKBundle compatibleWithTraitCollection:nil];
+    self.placeholderView.image =
+        [UIImage imageNamed:@"placeholder" inBundle:kPTKBundle compatibleWithTraitCollection:nil];
 
     CALayer *clip = [CALayer layer];
     clip.frame = CGRectMake(32, 0, 4, 20);
@@ -124,11 +124,11 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
     [self.placeholderView.layer addSublayer:clip];
 }
 
-- (void)setupCardNumberField
-{
+- (void)setupCardNumberField {
     self.cardNumberField = [[PTKTextField alloc] initWithFrame:CGRectMake(0, 0, 170, 20)];
     self.cardNumberField.delegate = self;
-    self.cardNumberField.placeholder = [self.class localizedStringWithKey:@"placeholder.card_number" defaultValue:@"1234 5678 9012 3456"];
+    self.cardNumberField.placeholder = [self.class localizedStringWithKey:@"placeholder.card_number"
+                                                             defaultValue:@"1234 5678 9012 3456"];
     self.cardNumberField.keyboardType = UIKeyboardTypeNumberPad;
     self.cardNumberField.textColor = DarkGreyColor;
     self.cardNumberField.font = DefaultBoldFont;
@@ -136,11 +136,12 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
     [self.cardNumberField.layer setMasksToBounds:YES];
 }
 
-- (void)setupCardExpiryField
-{
-    self.cardExpiryField = [[PTKTextField alloc] initWithFrame:CGRectMake(kPTKViewCardExpiryFieldStartX, 0, 60, 20)];
+- (void)setupCardExpiryField {
+    self.cardExpiryField =
+        [[PTKTextField alloc] initWithFrame:CGRectMake(kPTKViewCardExpiryFieldStartX, 0, 60, 20)];
     self.cardExpiryField.delegate = self;
-    self.cardExpiryField.placeholder = [self.class localizedStringWithKey:@"placeholder.card_expiry" defaultValue:@"MM/YY"];
+    self.cardExpiryField.placeholder =
+        [self.class localizedStringWithKey:@"placeholder.card_expiry" defaultValue:@"MM/YY"];
     self.cardExpiryField.keyboardType = UIKeyboardTypeNumberPad;
     self.cardExpiryField.textColor = DarkGreyColor;
     self.cardExpiryField.font = DefaultBoldFont;
@@ -148,11 +149,12 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
     [self.cardExpiryField.layer setMasksToBounds:YES];
 }
 
-- (void)setupCardCVCField
-{
-    self.cardCVCField = [[PTKTextField alloc] initWithFrame:CGRectMake(kPTKViewCardCVCFieldStartX, 0, 55, 20)];
+- (void)setupCardCVCField {
+    self.cardCVCField =
+        [[PTKTextField alloc] initWithFrame:CGRectMake(kPTKViewCardCVCFieldStartX, 0, 55, 20)];
     self.cardCVCField.delegate = self;
-    self.cardCVCField.placeholder = [self.class localizedStringWithKey:@"placeholder.card_cvc" defaultValue:@"CVC"];
+    self.cardCVCField.placeholder =
+        [self.class localizedStringWithKey:@"placeholder.card_cvc" defaultValue:@"CVC"];
     self.cardCVCField.keyboardType = UIKeyboardTypeNumberPad;
     self.cardCVCField.textColor = DarkGreyColor;
     self.cardCVCField.font = DefaultBoldFont;
@@ -162,8 +164,7 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
 
 // Checks both the old and new localization table (we switched in 3/14 to PaymentKit.strings).
 // Leave this in for a long while to preserve compatibility.
-+ (NSString *)localizedStringWithKey:(NSString *)key defaultValue:(NSString *)defaultValue
-{
++ (NSString *)localizedStringWithKey:(NSString *)key defaultValue:(NSString *)defaultValue {
     NSString *value = NSLocalizedStringFromTable(key, kPTKLocalizedStringsTableName, nil);
     if (value && ![value isEqualToString:key]) { // key == no value
         return value;
@@ -179,61 +180,57 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
 
 #pragma mark - Accessors
 
-- (PTKCardNumber *)cardNumber
-{
+- (PTKCardNumber *)cardNumber {
     return [PTKCardNumber cardNumberWithString:self.cardNumberField.text];
 }
 
-- (PTKCardExpiry *)cardExpiry
-{
+- (PTKCardExpiry *)cardExpiry {
     return [PTKCardExpiry cardExpiryWithString:self.cardExpiryField.text];
 }
 
-- (PTKCardCVC *)cardCVC
-{
+- (PTKCardCVC *)cardCVC {
     return [PTKCardCVC cardCVCWithString:self.cardCVCField.text];
 }
 
 #pragma mark - State
 
-- (void)stateCardNumber
-{
+- (void)stateCardNumber {
     if (!_isInitialState) {
         // Animate left
         _isInitialState = YES;
 
-        [UIView animateWithDuration:0.05 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
-                         animations:^{
-                             self.opaqueOverGradientView.alpha = 0.0;
-                         } completion:^(BOOL finished) {
-        }];
+        [UIView animateWithDuration:0.05
+            delay:0.0
+            options:UIViewAnimationOptionCurveEaseInOut
+            animations:^{
+              self.opaqueOverGradientView.alpha = 0.0;
+            }
+            completion:^(BOOL finished){
+            }];
         [UIView animateWithDuration:0.400
-                              delay:0
-                            options:(UIViewAnimationOptionCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction)
-                         animations:^{
-                             self.cardExpiryField.frame = CGRectMake(kPTKViewCardExpiryFieldStartX,
-                                     self.cardExpiryField.frame.origin.y,
-                                     self.cardExpiryField.frame.size.width,
-                                     self.cardExpiryField.frame.size.height);
-                             self.cardCVCField.frame = CGRectMake(kPTKViewCardCVCFieldStartX,
-                                     self.cardCVCField.frame.origin.y,
-                                     self.cardCVCField.frame.size.width,
-                                     self.cardCVCField.frame.size.height);
-                             self.cardNumberField.frame = CGRectMake(12,
-                                     self.cardNumberField.frame.origin.y,
-                                     self.cardNumberField.frame.size.width,
-                                     self.cardNumberField.frame.size.height);
-                         }
-                         completion:^(BOOL completed) {
-                             [self.cardExpiryField removeFromSuperview];
-                             [self.cardCVCField removeFromSuperview];
-                         }];
+            delay:0
+            options:(UIViewAnimationOptionCurveEaseInOut |
+                     UIViewAnimationOptionAllowUserInteraction)
+            animations:^{
+              self.cardExpiryField.frame = CGRectMake(
+                  kPTKViewCardExpiryFieldStartX, self.cardExpiryField.frame.origin.y,
+                  self.cardExpiryField.frame.size.width, self.cardExpiryField.frame.size.height);
+              self.cardCVCField.frame = CGRectMake(
+                  kPTKViewCardCVCFieldStartX, self.cardCVCField.frame.origin.y,
+                  self.cardCVCField.frame.size.width, self.cardCVCField.frame.size.height);
+              self.cardNumberField.frame = CGRectMake(12, self.cardNumberField.frame.origin.y,
+                                                      self.cardNumberField.frame.size.width,
+                                                      self.cardNumberField.frame.size.height);
+            }
+            completion:^(BOOL completed) {
+              [self.cardExpiryField removeFromSuperview];
+              [self.cardCVCField removeFromSuperview];
+            }];
         [self.cardNumberField becomeFirstResponder];
     }
 }
 
-- (void)stateMeta
-{
+- (void)stateMeta {
     _isInitialState = NO;
 
     CGSize cardNumberSize;
@@ -241,7 +238,7 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
     if ([self.cardNumber.formattedString respondsToSelector:@selector(sizeWithAttributes:)]) {
-        NSDictionary *attributes = @{NSFontAttributeName: DefaultBoldFont};
+        NSDictionary *attributes = @{NSFontAttributeName : DefaultBoldFont};
 
         cardNumberSize = [self.cardNumber.formattedString sizeWithAttributes:attributes];
         lastGroupSize = [self.cardNumber.lastGroup sizeWithAttributes:attributes];
@@ -250,33 +247,40 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
         lastGroupSize = [self.cardNumber.lastGroup sizeWithFont:DefaultBoldFont];
     }
 #else
-    NSDictionary *attributes = @{NSFontAttributeName: DefaultBoldFont};
+    NSDictionary *attributes = @{NSFontAttributeName : DefaultBoldFont};
 
     cardNumberSize = [self.cardNumber.formattedString sizeWithAttributes:attributes];
     lastGroupSize = [self.cardNumber.lastGroup sizeWithAttributes:attributes];
 #endif
 
-    CGFloat frameX = self.cardNumberField.frame.origin.x - (cardNumberSize.width - lastGroupSize.width);
+    CGFloat frameX =
+        self.cardNumberField.frame.origin.x - (cardNumberSize.width - lastGroupSize.width);
 
-    [UIView animateWithDuration:0.05 delay:0.35 options:UIViewAnimationOptionCurveEaseInOut
+    [UIView animateWithDuration:0.05
+        delay:0.35
+        options:UIViewAnimationOptionCurveEaseInOut
+        animations:^{
+          self.opaqueOverGradientView.alpha = 1.0;
+        }
+        completion:^(BOOL finished){
+        }];
+    [UIView animateWithDuration:0.400
+                          delay:0
+                        options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
-                         self.opaqueOverGradientView.alpha = 1.0;
-                     } completion:^(BOOL finished) {
-    }];
-    [UIView animateWithDuration:0.400 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        self.cardExpiryField.frame = CGRectMake(kPTKViewCardExpiryFieldEndX,
-                self.cardExpiryField.frame.origin.y,
-                self.cardExpiryField.frame.size.width,
-                self.cardExpiryField.frame.size.height);
-        self.cardCVCField.frame = CGRectMake(kPTKViewCardCVCFieldEndX,
-                self.cardCVCField.frame.origin.y,
-                self.cardCVCField.frame.size.width,
-                self.cardCVCField.frame.size.height);
-        self.cardNumberField.frame = CGRectMake(frameX,
-                self.cardNumberField.frame.origin.y,
-                self.cardNumberField.frame.size.width,
-                self.cardNumberField.frame.size.height);
-    }                completion:nil];
+                       self.cardExpiryField.frame = CGRectMake(
+                           kPTKViewCardExpiryFieldEndX, self.cardExpiryField.frame.origin.y,
+                           self.cardExpiryField.frame.size.width,
+                           self.cardExpiryField.frame.size.height);
+                       self.cardCVCField.frame = CGRectMake(
+                           kPTKViewCardCVCFieldEndX, self.cardCVCField.frame.origin.y,
+                           self.cardCVCField.frame.size.width, self.cardCVCField.frame.size.height);
+                       self.cardNumberField.frame =
+                           CGRectMake(frameX, self.cardNumberField.frame.origin.y,
+                                      self.cardNumberField.frame.size.width,
+                                      self.cardNumberField.frame.size.height);
+                     }
+                     completion:nil];
 
     [self addSubview:self.placeholderView];
     [self.innerView addSubview:self.cardExpiryField];
@@ -284,19 +288,16 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
     [self.cardExpiryField becomeFirstResponder];
 }
 
-- (void)stateCardCVC
-{
+- (void)stateCardCVC {
     [self.cardCVCField becomeFirstResponder];
 }
 
-- (BOOL)isValid
-{
+- (BOOL)isValid {
     return [self.cardNumber isValid] && [self.cardExpiry isValid] &&
-            [self.cardCVC isValidWithType:self.cardNumber.cardType];
+           [self.cardCVC isValidWithType:self.cardNumber.cardType];
 }
 
-- (PTKCard *)card
-{
+- (PTKCard *)card {
     PTKCard *card = [[PTKCard alloc] init];
     card.number = [self.cardNumber string];
     card.cvc = [self.cardCVC string];
@@ -306,25 +307,28 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
     return card;
 }
 
-- (void)setCard:(PTKCard *)card
-{
-    [self.cardNumberField setText:[[PTKCardNumber cardNumberWithString:card.number] formattedString]];
-    [self.cardExpiryField setText:[[[PTKCardExpiry alloc] initWithMonth:card.expMonth andYear:card.expYear] formattedString]];
+- (void)setCard:(PTKCard *)card {
+    [self.cardNumberField
+        setText:[[PTKCardNumber cardNumberWithString:card.number] formattedString]];
+    [self.cardExpiryField
+        setText:[[[PTKCardExpiry alloc] initWithMonth:card.expMonth
+                                              andYear:card.expYear] formattedString]];
     [self.cardCVCField setText:[[[PTKCardCVC alloc] initWithString:card.cvc] formattedString]];
 }
 
-- (void)setPlaceholderViewImage:(UIImage *)image
-{
+- (void)setPlaceholderViewImage:(UIImage *)image {
     if (![self.placeholderView.image isEqual:image]) {
         __block __unsafe_unretained UIView *previousPlaceholderView = self.placeholderView;
-        [UIView animateWithDuration:kPTKViewPlaceholderViewAnimationDuration delay:0
-                            options:UIViewAnimationOptionCurveEaseInOut
-                         animations:^{
-                             self.placeholderView.layer.opacity = 0.0;
-                             self.placeholderView.layer.transform = CATransform3DMakeScale(1.2, 1.2, 1.2);
-                         } completion:^(BOOL finished) {
-            [previousPlaceholderView removeFromSuperview];
-        }];
+        [UIView animateWithDuration:kPTKViewPlaceholderViewAnimationDuration
+            delay:0
+            options:UIViewAnimationOptionCurveEaseInOut
+            animations:^{
+              self.placeholderView.layer.opacity = 0.0;
+              self.placeholderView.layer.transform = CATransform3DMakeScale(1.2, 1.2, 1.2);
+            }
+            completion:^(BOOL finished) {
+              [previousPlaceholderView removeFromSuperview];
+            }];
         self.placeholderView = nil;
 
         [self setupPlaceholderView];
@@ -332,30 +336,34 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
         self.placeholderView.layer.opacity = 0.0;
         self.placeholderView.layer.transform = CATransform3DMakeScale(0.8, 0.8, 0.8);
         [self insertSubview:self.placeholderView belowSubview:previousPlaceholderView];
-        [UIView animateWithDuration:kPTKViewPlaceholderViewAnimationDuration delay:0
-                            options:UIViewAnimationOptionCurveEaseInOut
-                         animations:^{
-                             self.placeholderView.layer.opacity = 1.0;
-                             self.placeholderView.layer.transform = CATransform3DIdentity;
-                         } completion:^(BOOL finished) {
-        }];
+        [UIView animateWithDuration:kPTKViewPlaceholderViewAnimationDuration
+            delay:0
+            options:UIViewAnimationOptionCurveEaseInOut
+            animations:^{
+              self.placeholderView.layer.opacity = 1.0;
+              self.placeholderView.layer.transform = CATransform3DIdentity;
+            }
+            completion:^(BOOL finished){
+            }];
     }
 }
 
-- (void)setPlaceholderToCVC
-{
+- (void)setPlaceholderToCVC {
     PTKCardNumber *cardNumber = [PTKCardNumber cardNumberWithString:self.cardNumberField.text];
     PTKCardType cardType = [cardNumber cardType];
 
     if (cardType == PTKCardTypeAmex) {
-        [self setPlaceholderViewImage:[UIImage imageNamed:@"cvc-amex" inBundle:kPTKBundle compatibleWithTraitCollection:nil]];
+        [self setPlaceholderViewImage:[UIImage imageNamed:@"cvc-amex"
+                                                               inBundle:kPTKBundle
+                                          compatibleWithTraitCollection:nil]];
     } else {
-        [self setPlaceholderViewImage:[UIImage imageNamed:@"cvc" inBundle:kPTKBundle compatibleWithTraitCollection:nil]];
+        [self setPlaceholderViewImage:[UIImage imageNamed:@"cvc"
+                                                               inBundle:kPTKBundle
+                                          compatibleWithTraitCollection:nil]];
     }
 }
 
-- (void)setPlaceholderToCardType
-{
+- (void)setPlaceholderToCardType {
     PTKCardNumber *cardNumber = [PTKCardNumber cardNumberWithString:self.cardNumberField.text];
     PTKCardType cardType = [cardNumber cardType];
     NSString *cardTypeName = @"placeholder";
@@ -383,13 +391,20 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
             break;
     }
 
-    [self setPlaceholderViewImage:[UIImage imageNamed:cardTypeName inBundle:kPTKBundle compatibleWithTraitCollection:nil]];
+    [self setPlaceholderViewImage:[UIImage imageNamed:cardTypeName
+                                                           inBundle:kPTKBundle
+                                      compatibleWithTraitCollection:nil]];
 }
 
 #pragma mark - Delegates
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField
-{
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    [self handleUnderlineColor];
+    return YES;
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
     if ([textField isEqual:self.cardCVCField]) {
         [self setPlaceholderToCVC];
     } else {
@@ -399,67 +414,79 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
     if ([textField isEqual:self.cardNumberField] && !_isInitialState) {
         [self stateCardNumber];
     }
-    
+
     [self handleToolbarStates];
+    [self handleUnderlineColor];
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)replacementString
-{
-    
+- (BOOL)textField:(UITextField *)textField
+    shouldChangeCharactersInRange:(NSRange)range
+                replacementString:(NSString *)replacementString {
+
     BOOL returnValue;
     if ([textField isEqual:self.cardNumberField]) {
-        returnValue =  [self cardNumberFieldShouldChangeCharactersInRange:range replacementString:replacementString];
+        returnValue = [self cardNumberFieldShouldChangeCharactersInRange:range
+                                                       replacementString:replacementString];
     }
 
     if ([textField isEqual:self.cardExpiryField]) {
-        returnValue =  [self cardExpiryShouldChangeCharactersInRange:range replacementString:replacementString];
+        returnValue = [self cardExpiryShouldChangeCharactersInRange:range
+                                                  replacementString:replacementString];
     }
 
     if ([textField isEqual:self.cardCVCField]) {
-        returnValue = [self cardCVCShouldChangeCharactersInRange:range replacementString:replacementString];
+        returnValue =
+            [self cardCVCShouldChangeCharactersInRange:range replacementString:replacementString];
     }
     [self handleToolbarStates];
     return returnValue;
 }
 
 - (void)handleToolbarStates {
-    
-    if(self.firstResponderField == self.cardCVCField){
-        if([[self cardCVC] isValid]){
-            [self addToolbarToCurrentTextFieldWithText:NSLocalizedString(@"Done", @"")withValid:YES];
-        }else{
-            [self addToolbarToCurrentTextFieldWithText:NSLocalizedString(@"Done", @"")withValid:NO];
+
+    if (self.firstResponderField == self.cardCVCField) {
+        if ([[self cardCVC] isValid]) {
+            [self addToolbarToCurrentTextFieldWithText:NSLocalizedString(@"Done", @"")
+                                             withValid:YES];
+        } else {
+            [self addToolbarToCurrentTextFieldWithText:NSLocalizedString(@"Done", @"")
+                                             withValid:NO];
         }
-    } else if(self.firstResponderField == self.cardExpiryField){
-        if([[self cardExpiry] isValid]){
-            [self addToolbarToCurrentTextFieldWithText:NSLocalizedString(@"Next", @"") withValid:YES];
-        }else{
-            [self addToolbarToCurrentTextFieldWithText:NSLocalizedString(@"Next", @"")withValid:NO];
+    } else if (self.firstResponderField == self.cardExpiryField) {
+        if ([[self cardExpiry] isValid]) {
+            [self addToolbarToCurrentTextFieldWithText:NSLocalizedString(@"Next", @"")
+                                             withValid:YES];
+        } else {
+            [self addToolbarToCurrentTextFieldWithText:NSLocalizedString(@"Next", @"")
+                                             withValid:NO];
         }
-    } else if(self.firstResponderField == self.cardNumberField){
-        if([[self cardNumber] isValid]){
-            [self addToolbarToCurrentTextFieldWithText:NSLocalizedString(@"Next", @"") withValid:YES];
-        }else{
-            [self addToolbarToCurrentTextFieldWithText:NSLocalizedString(@"Next", @"")withValid:NO];
+    } else if (self.firstResponderField == self.cardNumberField) {
+        if ([[self cardNumber] isValid]) {
+            [self addToolbarToCurrentTextFieldWithText:NSLocalizedString(@"Next", @"")
+                                             withValid:YES];
+        } else {
+            [self addToolbarToCurrentTextFieldWithText:NSLocalizedString(@"Next", @"")
+                                             withValid:NO];
         }
     }
 }
 
-- (void)pkTextFieldDidBackSpaceWhileTextIsEmpty:(PTKTextField *)textField
-{
+- (void)pkTextFieldDidBackSpaceWhileTextIsEmpty:(PTKTextField *)textField {
     if (textField == self.cardCVCField)
         [self.cardExpiryField becomeFirstResponder];
     else if (textField == self.cardExpiryField)
         [self stateCardNumber];
 }
 
-- (BOOL)cardNumberFieldShouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)replacementString
-{
-    NSString *resultString = [self.cardNumberField.text stringByReplacingCharactersInRange:range withString:replacementString];
+- (BOOL)cardNumberFieldShouldChangeCharactersInRange:(NSRange)range
+                                   replacementString:(NSString *)replacementString {
+    NSString *resultString =
+        [self.cardNumberField.text stringByReplacingCharactersInRange:range
+                                                           withString:replacementString];
     resultString = [PTKTextField textByRemovingUselessSpacesFromString:resultString];
     PTKCardNumber *cardNumber = [PTKCardNumber cardNumberWithString:resultString];
 
-   if (![cardNumber isPartiallyValid]) {
+    if (![cardNumber isPartiallyValid]) {
         NSString *existingString =
             [PTKTextField textByRemovingUselessSpacesFromString:self.cardNumberField.text];
         PTKCardNumber *existingCardNumber = [PTKCardNumber cardNumberWithString:existingString];
@@ -468,7 +495,7 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
         }
         return NO;
     }
-    
+
     if (replacementString.length > 0) {
         self.cardNumberField.text = [cardNumber formattedStringWithTrail];
     } else {
@@ -491,9 +518,11 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
     return NO;
 }
 
-- (BOOL)cardExpiryShouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)replacementString
-{
-    NSString *resultString = [self.cardExpiryField.text stringByReplacingCharactersInRange:range withString:replacementString];
+- (BOOL)cardExpiryShouldChangeCharactersInRange:(NSRange)range
+                              replacementString:(NSString *)replacementString {
+    NSString *resultString =
+        [self.cardExpiryField.text stringByReplacingCharactersInRange:range
+                                                           withString:replacementString];
     resultString = [PTKTextField textByRemovingUselessSpacesFromString:resultString];
     PTKCardExpiry *cardExpiry = [PTKCardExpiry cardExpiryWithString:resultString];
 
@@ -526,15 +555,19 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
     return NO;
 }
 
-- (BOOL)cardCVCShouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)replacementString
-{
-    NSString *resultString = [self.cardCVCField.text stringByReplacingCharactersInRange:range withString:replacementString];
+- (BOOL)cardCVCShouldChangeCharactersInRange:(NSRange)range
+                           replacementString:(NSString *)replacementString {
+    NSString *resultString =
+        [self.cardCVCField.text stringByReplacingCharactersInRange:range
+                                                        withString:replacementString];
     resultString = [PTKTextField textByRemovingUselessSpacesFromString:resultString];
     PTKCardCVC *cardCVC = [PTKCardCVC cardCVCWithString:resultString];
-    PTKCardType cardType = [[PTKCardNumber cardNumberWithString:self.cardNumberField.text] cardType];
+    PTKCardType cardType =
+        [[PTKCardNumber cardNumberWithString:self.cardNumberField.text] cardType];
 
     // Restrict length
-    if (![cardCVC isPartiallyValidWithType:cardType]) return NO;
+    if (![cardCVC isPartiallyValidWithType:cardType])
+        return NO;
 
     // Strip non-digits
     self.cardCVCField.text = [cardCVC string];
@@ -548,11 +581,9 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
     return NO;
 }
 
-
 #pragma mark - Validations
 
-- (void)checkValid
-{
+- (void)checkValid {
     if ([self isValid]) {
         _isValidState = YES;
 
@@ -569,14 +600,12 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
     }
 }
 
-- (void)textFieldIsValid:(UITextField *)textField
-{
+- (void)textFieldIsValid:(UITextField *)textField {
     textField.textColor = DarkGreyColor;
     [self checkValid];
 }
 
-- (void)textFieldIsInvalid:(UITextField *)textField withErrors:(BOOL)errors
-{
+- (void)textFieldIsInvalid:(UITextField *)textField withErrors:(BOOL)errors {
     if (errors) {
         textField.textColor = RedColor;
     } else {
@@ -590,7 +619,7 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
 #pragma mark UIResponder
 - (UIResponder *)firstResponderField;
 {
-    NSArray *responders = @[self.cardNumberField, self.cardExpiryField, self.cardCVCField];
+    NSArray *responders = @[ self.cardNumberField, self.cardExpiryField, self.cardCVCField ];
     for (UIResponder *responder in responders) {
         if (responder.isFirstResponder) {
             return responder;
@@ -621,86 +650,72 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
 }
 
 - (BOOL)isFirstResponder;
-{
-    return self.firstResponderField.isFirstResponder;
-}
+{ return self.firstResponderField.isFirstResponder; }
 
 - (BOOL)canBecomeFirstResponder;
-{
-    return self.nextFirstResponder.canBecomeFirstResponder;
-}
+{ return self.nextFirstResponder.canBecomeFirstResponder; }
 
 - (BOOL)becomeFirstResponder;
-{
-    return [self.nextFirstResponder becomeFirstResponder];
-}
+{ return [self.nextFirstResponder becomeFirstResponder]; }
 
 - (BOOL)canResignFirstResponder;
-{
-    return self.firstResponderField.canResignFirstResponder;
-}
+{ return self.firstResponderField.canResignFirstResponder; }
 
 - (BOOL)resignFirstResponder;
 {
     [super resignFirstResponder];
-    BOOL returnValue =  [self.firstResponderField resignFirstResponder];
+    BOOL returnValue = [self.firstResponderField resignFirstResponder];
     [self handleUnderlineColor];
     return returnValue;
 }
-
 
 - (void)layoutSubviews {
     [super layoutSubviews];
     [self handleUnderlineColor];
 }
 - (void)handleUnderlineColor {
-    BOOL firstResponder = self.firstResponderField;
+    BOOL firstResponder = self.firstResponderField.isFirstResponder;
     self.underlineView.backgroundColor =
-    (firstResponder ? self.lineHighlightTintColor.CGColor
-     : self.lineNormalTintColor.CGColor);
+        (firstResponder ? self.lineHighlightTintColor.CGColor : self.lineNormalTintColor.CGColor);
 }
 
 #pragma mark - Done state handling
 
 - (void)addToolbarToCurrentTextFieldWithText:(NSString *)buttonText withValid:(BOOL)valid {
-    
-    
-    if(!doneToolbar){
-    doneToolbar = [[UIToolbar alloc]
-                              initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].applicationFrame.size.width, 50)];
-    doneToolbar.barStyle = UIBarStyleDefault;
-    
-    UIBarButtonItem *space =
-    [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                                  target:nil
-                                                  action:nil];
-    doneButton = [[UIBarButtonItem alloc] initWithTitle:buttonText
-                                                              style:UIBarButtonItemStyleDone
-                                                             target:self
-                                                             action:@selector(closeKeyboard)];
-    doneButton.tintColor = self.lineHighlightTintColor;
-    
-    doneToolbar.items = @[ space, doneButton ];
-    [doneToolbar sizeToFit];
+
+    if (!doneToolbar) {
+        doneToolbar = [[UIToolbar alloc]
+            initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].applicationFrame.size.width, 50)];
+        doneToolbar.barStyle = UIBarStyleDefault;
+
+        UIBarButtonItem *space =
+            [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                          target:nil
+                                                          action:nil];
+        doneButton = [[UIBarButtonItem alloc] initWithTitle:buttonText
+                                                      style:UIBarButtonItemStyleDone
+                                                     target:self
+                                                     action:@selector(closeKeyboard)];
+        doneButton.tintColor = self.lineHighlightTintColor;
+
+        doneToolbar.items = @[ space, doneButton ];
+        [doneToolbar sizeToFit];
     }
     [doneButton setTitle:buttonText];
     [(UITextField *)self.firstResponderField setInputAccessoryView:doneToolbar];
     [doneButton setEnabled:valid];
 }
 
-
 - (void)closeKeyboard {
-    if(self.firstInvalidField){
+    if (self.firstInvalidField) {
         [[self firstInvalidField] becomeFirstResponder];
-    }else if(self.firstResponderField == self.cardNumberField){
+    } else if (self.firstResponderField == self.cardNumberField) {
         [self stateMeta];
-    }else if(self.firstResponderField == self.cardExpiryField){
+    } else if (self.firstResponderField == self.cardExpiryField) {
         [self stateCardCVC];
-    }else{
+    } else {
         [self resignFirstResponder];
     }
 }
-
-
 
 @end
