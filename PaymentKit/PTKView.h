@@ -16,7 +16,6 @@
 
 @class PTKView, PTKTextField;
 
-__attribute__((deprecated("We've moved development of PaymentKit into github.com/stripe/stripe-ios. You should migrate to use that instead. For help, see https://github.com/stripe/paymentkit#migration .")))
 @protocol PTKViewDelegate <NSObject>
 
 @optional
@@ -24,7 +23,6 @@ __attribute__((deprecated("We've moved development of PaymentKit into github.com
 
 @end
 
-__attribute__((deprecated("We've moved development of PaymentKit into github.com/stripe/stripe-ios. You should migrate to use that instead. For help, see https://github.com/stripe/paymentkit#migration .")))
 @interface PTKView : UIView
 
 - (BOOL)isValid;
@@ -43,5 +41,12 @@ __attribute__((deprecated("We've moved development of PaymentKit into github.com
 @property IBOutlet UIImageView *placeholderView;
 @property (nonatomic, weak) id <PTKViewDelegate> delegate;
 @property (readonly) PTKCard *card;
+
+// Colors for the underline.
+@property (nonatomic, retain) UIColor *lineHighlightTintColor;
+@property (nonatomic, retain) UIColor *lineNormalTintColor;
+
+// Preset values to the UI.
+- (void)setCard:(PTKCard *)card;
 
 @end
