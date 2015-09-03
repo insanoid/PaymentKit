@@ -677,6 +677,8 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
     BOOL firstResponder = self.firstResponderField.isFirstResponder;
     self.underlineView.backgroundColor =
         (firstResponder ? self.lineHighlightTintColor.CGColor : self.lineNormalTintColor.CGColor);
+    self.underlineView.frame =
+    CGRectMake(0.0f, self.frame.size.height - 1, self.frame.size.width, 1.0);
 }
 
 #pragma mark - Done state handling
