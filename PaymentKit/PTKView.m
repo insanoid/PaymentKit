@@ -497,10 +497,15 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
     resultString = [PTKTextField textByRemovingUselessSpacesFromString:resultString];
     PTKCardExpiry *cardExpiry = [PTKCardExpiry cardExpiryWithString:resultString];
 
-    if (![cardExpiry isPartiallyValid]) return NO;
-
-    // Only support shorthand year
-    if ([cardExpiry formattedString].length > 5) return NO;
+    if (![cardExpiry isPartiallyValid] || [cardExpiry formattedString].length > 5) {
+        NSString *existingString =
+            [PTKTextField textByRemovingUselessSpacesFromString:self.cardExpiryField.text];
+        PTKCardNumber *existingExpiry = [PTKCardExpiry cardExpiryWithString:existingString];
+        if ([existingExpiry isValid]) {
+            [self stateCardCVC];
+        }
+        return NO;
+    }
 
     if (replacementString.length > 0) {
         self.cardExpiryField.text = [cardExpiry formattedStringWithTrail];
