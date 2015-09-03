@@ -2,6 +2,8 @@
 
 ### Extended features and Improvements
 
+![Preview](https://raw.githubusercontent.com/insanoid/PaymentKit/master/preview.gif)
+
 - Bug where the user was not able to enter the last character of an invalid card is solved (the text becomes red now properly when an invalid card is entered instead of not allowing him enter the last character of the invalid card).
 
 - Pre-loading card information in the UI.
@@ -13,3 +15,5 @@
 - UI was pretty old, switched to a simple line based design.
 
 - Access to change the color of the line. 
+
+#### Suggestions and improvements are welcomed!
