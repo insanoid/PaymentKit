@@ -46,6 +46,13 @@
     return [self initWithMonth:monthStr year:yearStr];
 }
 
+
+
+- (instancetype)initWithMonth:(NSUInteger)month andYear:(NSUInteger)year {
+    
+    return [self initWithString:[NSString stringWithFormat:@"%02lu/%02lu",(unsigned long)month,(unsigned long)year]];
+}
+
 - (instancetype)initWithMonth:(NSString *)monthStr year:(NSString *)yearStr
 {
    if (self = [super init]) {
