@@ -26,18 +26,37 @@
     if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
-
+    
     self.title = @"Change Card";
     
     UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStyleDone target:self action:@selector(save:)];
     saveButton.enabled = NO;
     self.navigationItem.rightBarButtonItem = saveButton;
     
-    self.paymentView = [[PTKView alloc] initWithFrame:CGRectMake(15, 25, 290, 45)];
+    
+    self.paymentView = [[PTKView alloc] initWithFrame:CGRectMake(15, 25, 290, 50)];
+    
+    
+    if(self.preloadCard){
+        PTKCard *card = [[PTKCard alloc] init];
+        card.number = @"4111111111111111";
+        card.expMonth = 06;
+        card.expYear = 16;
+        card.cvc = @"737";
+        [self.paymentView setCard:card];
+    }
+    
+    [self.paymentView setLineHighlightTintColor:[UIColor redColor]];
+    [self.paymentView setLineNormalTintColor:[UIColor darkGrayColor]];
     self.paymentView.delegate = self;
     
     [self.view addSubview:self.paymentView];
-    [self.paymentView becomeFirstResponder];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.view resignFirstResponder];
+    
 }
 
 

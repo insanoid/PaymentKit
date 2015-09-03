@@ -10,6 +10,7 @@
 
 @interface ViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, strong) IBOutlet UITableViewCell *paymentCell;
+@property (nonatomic, weak) IBOutlet UITableViewCell *paymentCell;
+@property (nonatomic, weak) IBOutlet UITableViewCell *preloadedPaymentCell;
 
 @end

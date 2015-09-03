@@ -23,35 +23,21 @@
 {
     [super viewDidLoad];
     self.title = @"Settings";
-    [self updatePaymentCell];
-}
-
-- (void)updatePaymentCell
-{
-    NSString* last4 = [[NSUserDefaults standardUserDefaults] stringForKey:@"card.last4"];
-    self.paymentCell.detailTextLabel.text = last4;
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    [self updatePaymentCell];
-}
-
-- (void)changeCard
-{
-    PaymentViewController *viewController = [[PaymentViewController alloc] initWithNibName:@"PaymentViewController" bundle:nil];
-    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row == 0) return self.paymentCell;
+    if (indexPath.row == 1) return self.preloadedPaymentCell;
     return nil;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 1;
+    return 2;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -60,8 +46,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    if ([cell isEqual:self.paymentCell]) [self changeCard];
+    PaymentViewController *viewController = [[PaymentViewController alloc] initWithNibName:@"PaymentViewController" bundle:nil];
+    
+    if(indexPath.row == 1){
+        [viewController setPreloadCard:YES];
+    }
+    [self.navigationController pushViewController:viewController animated:YES];
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }

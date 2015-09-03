@@ -10,5 +10,5 @@
 #import "PTKView.h"
 
 @interface PaymentViewController : UIViewController <PTKViewDelegate>
-
+@property (nonatomic, assign) BOOL preloadCard;
 @end
