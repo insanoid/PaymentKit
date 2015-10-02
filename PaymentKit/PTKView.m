@@ -23,8 +23,6 @@
 #define kPTKViewCardExpiryFieldEndX 84
 #define kPTKViewCardCVCFieldEndX 177
 
-#define kPTKBundle [NSBundle bundleForClass:[PTKView class]]
-
 static NSString *const kPTKLocalizedStringsTableName = @"PaymentKit";
 static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable";
 
@@ -116,7 +114,7 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
     self.placeholderView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 13, 32, 20)];
     self.placeholderView.backgroundColor = [UIColor clearColor];
     self.placeholderView.image =
-        [UIImage imageNamed:@"placeholder" inBundle:kPTKBundle compatibleWithTraitCollection:nil];
+        [UIImage imageNamed:@"placeholder"];
 
     CALayer *clip = [CALayer layer];
     clip.frame = CGRectMake(32, 0, 4, 20);
@@ -141,7 +139,8 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
         [[PTKTextField alloc] initWithFrame:CGRectMake(kPTKViewCardExpiryFieldStartX, 0, 60, 20)];
     self.cardExpiryField.delegate = self;
     self.cardExpiryField.placeholder =
-        [self.class localizedStringWithKey:@"placeholder.card_expiry" defaultValue:@"MM/YY"];
+        [self.class localizedStringWithKey:@"placeholder.card_expiry"
+                              defaultValue:@"MM/YY"];
     self.cardExpiryField.keyboardType = UIKeyboardTypeNumberPad;
     self.cardExpiryField.textColor = DarkGreyColor;
     self.cardExpiryField.font = DefaultBoldFont;
@@ -154,7 +153,8 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
         [[PTKTextField alloc] initWithFrame:CGRectMake(kPTKViewCardCVCFieldStartX, 0, 55, 20)];
     self.cardCVCField.delegate = self;
     self.cardCVCField.placeholder =
-        [self.class localizedStringWithKey:@"placeholder.card_cvc" defaultValue:@"CVC"];
+        [self.class localizedStringWithKey:@"placeholder.card_cvc"
+                              defaultValue:@"CVC"];
     self.cardCVCField.keyboardType = UIKeyboardTypeNumberPad;
     self.cardCVCField.textColor = DarkGreyColor;
     self.cardCVCField.font = DefaultBoldFont;
@@ -353,13 +353,9 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
     PTKCardType cardType = [cardNumber cardType];
 
     if (cardType == PTKCardTypeAmex) {
-        [self setPlaceholderViewImage:[UIImage imageNamed:@"cvc-amex"
-                                                               inBundle:kPTKBundle
-                                          compatibleWithTraitCollection:nil]];
+        [self setPlaceholderViewImage:[UIImage imageNamed:@"cvc-amex"]];
     } else {
-        [self setPlaceholderViewImage:[UIImage imageNamed:@"cvc"
-                                                               inBundle:kPTKBundle
-                                          compatibleWithTraitCollection:nil]];
+        [self setPlaceholderViewImage:[UIImage imageNamed:@"cvc"]];
     }
 }
 
@@ -391,9 +387,7 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
             break;
     }
 
-    [self setPlaceholderViewImage:[UIImage imageNamed:cardTypeName
-                                                           inBundle:kPTKBundle
-                                      compatibleWithTraitCollection:nil]];
+    [self setPlaceholderViewImage:[UIImage imageNamed:cardTypeName]];
 }
 
 #pragma mark - Delegates
@@ -436,7 +430,8 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
 
     if ([textField isEqual:self.cardCVCField]) {
         returnValue =
-            [self cardCVCShouldChangeCharactersInRange:range replacementString:replacementString];
+            [self cardCVCShouldChangeCharactersInRange:range
+                                     replacementString:replacementString];
     }
     [self handleToolbarStates];
     return returnValue;
@@ -678,7 +673,7 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
     self.underlineView.backgroundColor =
         (firstResponder ? self.lineHighlightTintColor.CGColor : self.lineNormalTintColor.CGColor);
     self.underlineView.frame =
-    CGRectMake(0.0f, self.frame.size.height - 1, self.frame.size.width, 1.0);
+        CGRectMake(0.0f, self.frame.size.height - 1, self.frame.size.width, 1.0);
 }
 
 #pragma mark - Done state handling
