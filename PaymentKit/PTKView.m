@@ -23,6 +23,8 @@
 #define kPTKViewCardExpiryFieldEndX 84
 #define kPTKViewCardCVCFieldEndX 177
 
+#define kPTKBundle [NSBundle bundleForClass:[PTKView class]]
+
 static NSString *const kPTKLocalizedStringsTableName = @"PaymentKit";
 static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable";
 
@@ -114,7 +116,9 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
     self.placeholderView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 13, 32, 20)];
     self.placeholderView.backgroundColor = [UIColor clearColor];
     self.placeholderView.image =
-        [UIImage imageNamed:@"placeholder"];
+        [UIImage imageNamed:@"placeholder"
+                                 inBundle:kPTKBundle
+            compatibleWithTraitCollection:nil];
 
     CALayer *clip = [CALayer layer];
     clip.frame = CGRectMake(32, 0, 4, 20);
@@ -353,9 +357,13 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
     PTKCardType cardType = [cardNumber cardType];
 
     if (cardType == PTKCardTypeAmex) {
-        [self setPlaceholderViewImage:[UIImage imageNamed:@"cvc-amex"]];
+        [self setPlaceholderViewImage:[UIImage imageNamed:@"cvc-amex"
+                                                               inBundle:kPTKBundle
+                                          compatibleWithTraitCollection:nil]];
     } else {
-        [self setPlaceholderViewImage:[UIImage imageNamed:@"cvc"]];
+        [self setPlaceholderViewImage:[UIImage imageNamed:@"cvc"
+                                                               inBundle:kPTKBundle
+                                          compatibleWithTraitCollection:nil]];
     }
 }
 
@@ -387,7 +395,9 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
             break;
     }
 
-    [self setPlaceholderViewImage:[UIImage imageNamed:cardTypeName]];
+    [self setPlaceholderViewImage:[UIImage imageNamed:cardTypeName
+                                                           inBundle:kPTKBundle
+                                      compatibleWithTraitCollection:nil]];
 }
 
 #pragma mark - Delegates
